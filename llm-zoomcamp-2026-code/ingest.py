@@ -1,5 +1,6 @@
 import requests
 from minsearch import Index
+from sqlitesearch import TextSearchIndex
 
 def load_faq_data():
     docs_url = "https://datatalks.club/faq/json/courses.json"
@@ -25,4 +26,12 @@ def build_index(documents):
         keyword_fields=["course"]
     )
     index.fit(documents)
+    return index
+
+def sqlite_build_index():
+    index = TextSearchIndex(
+        text_fields=["question", "section", "answer"],
+        keyword_fields=["course"],
+        db_path="faq.db"
+    )
     return index
